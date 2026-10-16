@@ -1,0 +1,231 @@
+{
+ "D-02 parts": 41,
+ "D-04 parts": 11,
+ "D-03 parts": 12,
+ "D-09 parts": 13,
+ "D-01 parts": 14,
+ "complete assembly solids": 441,
+ "complete assembly static overlaps (> 0.5 mm3)": [],
+ "process sequence": {
+  "figures": 13,
+  "step_files": 13,
+  "readback_all_valid": true,
+  "overlaps": {
+   "P01": [],
+   "P02": [],
+   "P03": [
+    "intended_cut: process:커버 (가상) / tool02:02 엔드밀 Ø6 42.4 mm3",
+    "intended_cut: process:커버 테두리 (가상) / tool02:02 엔드밀 Ø6 42.4 mm3"
+   ],
+   "P04": [],
+   "P05": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P06": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "intended_cut: process:버스바 연결부 A+7 / tool02:02 엔드밀 Ø6 56.5 mm3"
+   ],
+   "P07": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P08": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3"
+   ],
+   "P09": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P10": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P11": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P12": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ],
+   "P13": [
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: rack:거치대 다리 / process:커버 (가상) 13050.0 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3",
+    "check: process:커버 (가상) / tool02:02 Ø80 흡착컵 6488.8 mm3"
+   ]
+  }
+ },
+ "explainer html": {
+  "file": "CTP_R03_explainer.html",
+  "bytes": 8593820
+ },
+ "viewer_files (GLB/STL per assembly)": {
+  "TOOL03_R03_assembly": {
+   "bytes": 2459068,
+   "nodes": 80,
+   "meshes": 79,
+   "materials": 25,
+   "triangles": 88096,
+   "bounds_m": [
+    [
+     -0.08,
+     0.0,
+     -0.073
+    ],
+    [
+     0.09,
+     0.294,
+     0.073
+    ]
+   ],
+   "stl_bytes": 4404884,
+   "stl_skipped": []
+  },
+  "TOOL03_machined_parts_in_place": {
+   "bytes": 822044,
+   "nodes": 14,
+   "meshes": 13,
+   "materials": 8,
+   "triangles": 26972,
+   "bounds_m": [
+    [
+     -0.08,
+     0.01,
+     -0.07
+    ],
+    [
+     0.08,
+     0.169,
+     0.07
+    ]
+   ],
+   "stl_bytes": 1348684,
+   "stl_skipped": []
+  },
+  "BENCH_block_2x12_assembly": {
+   "bytes": 1320268,
+   "nodes": 244,
+   "meshes": 243,
+   "materials": 11,
+   "triangles": 37596,
+   "bounds_m": [
+    [
+     -0.11,
+     -0.13,
+     -0.184
+    ],
+    [
+     0.26,
+     0.005,
+     0.212
+    ]
+   ],
+   "stl_bytes": 1879884,
+   "stl_skipped": []
+  },
+  "BENCH_with_TOOL03_working_pose": {
+   "bytes": 3119864,
+   "nodes": 183,
+   "meshes": 182,
+   "materials": 36,
+   "triangles": 107268,
+   "bounds_m": [
+    [
+     -0.11,
+     -0.13,
+     -0.098
+    ],
+    [
+     0.26,
+     0.294,
+     0.098
+    ]
+   ],
+   "stl_bytes": 5363484,
+   "stl_skipped": []
+  },
+  "TOOL02_R03_outline_assembly": {
+   "bytes": 220308,
+   "nodes": 24,
+   "meshes": 23,
+   "materials": 10,
+   "triangles": 6696,
+   "bounds_m": [
+    [
+     -0.34,
+     -0.06,
+     -0.24
+    ],
+    [
+     0.34,
+     0.23,
+     0.24
+    ]
+   ],
+   "stl_bytes": 334884,
+   "stl_skipped": []
+  },
+  "LAYOUT_R03_tools_parked": {
+   "bytes": 1943432,
+   "nodes": 198,
+   "meshes": 197,
+   "materials": 31,
+   "triangles": 63194,
+   "bounds_m": [
+    [
+     -0.9,
+     0.0,
+     -1.5
+    ],
+    [
+     5.4,
+     3.4,
+     1.5
+    ]
+   ],
+   "stl_bytes": 3156784,
+   "stl_skipped": [
+    "fence"
+   ]
+  },
+  "CTP_R03_complete_assembly_working_pose": {
+   "bytes": 3097100,
+   "nodes": 442,
+   "meshes": 441,
+   "materials": 42,
+   "triangles": 94758,
+   "bounds_m": [
+    [
+     -0.9,
+     0.0,
+     -1.5
+    ],
+    [
+     5.4,
+     3.4,
+     1.5
+    ]
+   ],
+   "stl_bytes": 4734984,
+   "stl_skipped": [
+    "fence"
+   ]
+  }
+ }
+}

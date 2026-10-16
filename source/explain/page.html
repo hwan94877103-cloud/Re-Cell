@@ -1,0 +1,623 @@
+<title>CTP 해체 로봇 도면 해설</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: a drafting desk. Paper drawing on the left (zoomable, red-pen markers), 3D picture and the
+   numbered index on the right. Markers always use the drawing's own numbers. */
+@property --inv { syntax: '<number>'; inherits: true; initial-value: 1; }
+:root {
+  --bg: #e5e9e9;
+  --panel: #f6f7f6;
+  --ink: #1b2023;
+  --muted: #59646a;
+  --line: #cbd2d3;
+  --chip: #dce2e2;
+  --mark: #d2302a;
+  --mark-soft: rgba(210, 48, 42, .13);
+  --paper: #ffffff;
+  --view: #edf0f0;
+  --shadow: 0 1px 2px rgba(16, 24, 28, .07), 0 8px 22px rgba(16, 24, 28, .07);
+  --sans: 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111517; --panel: #1a2023; --ink: #e3e7e8; --muted: #97a2a7; --line: #2c3538; --chip: #252d30;
+    --mark: #e0372f; --mark-soft: rgba(255, 92, 82, .18); --paper: #f1f1ed; --view: #d8dedf;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 26px rgba(0, 0, 0, .32); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111517; --panel: #1a2023; --ink: #e3e7e8; --muted: #97a2a7; --line: #2c3538; --chip: #252d30;
+  --mark: #e0372f; --mark-soft: rgba(255, 92, 82, .18); --paper: #f1f1ed; --view: #d8dedf;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 26px rgba(0, 0, 0, .32); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1500px; margin: 0 auto; padding-block: 22px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button { font: inherit; color: inherit; }
+button:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+/* header */
+.head { display: grid; gap: 6px; margin-bottom: 16px; }
+.over { font: 500 12px/1.4 var(--mono); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(23px, 2.4vw, 31px); line-height: 1.25; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+.lead { margin: 0; max-width: 72ch; color: var(--ink); }
+.how { margin: 0; max-width: 80ch; color: var(--muted); font-size: 13.5px; display: flex; gap: 8px; align-items: flex-start; }
+.how .tag { flex: none; margin-top: 2px; }
+.dlrow { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; font-size: 13.5px; color: var(--muted); }
+.dlrow a, .meta a { color: var(--ink); text-underline-offset: 2px; }
+.dlrow .dlnote { flex-basis: 100%; font-size: 12.5px; }
+html.dl-off #dlrow, html.dl-off #seqdl, html.dl-off a.dl, html.dl-off .dlwrap { display: none !important; }
+
+/* drawing tabs */
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 10px; scrollbar-width: thin; }
+.tab { flex: none; display: flex; align-items: baseline; gap: 8px; padding: 8px 13px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--panel); cursor: pointer; white-space: nowrap; }
+.tab .code { font: 600 13px/1 var(--mono); }
+.tab .cnt { font-size: 12px; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab[aria-selected="true"] .cnt { color: inherit; opacity: .7; }
+.sheetbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 12px; min-height: 34px; }
+.subtabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sub { padding: 4px 11px; border-radius: 999px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 13.5px; }
+.sub .n { font: 600 12px var(--mono); margin-right: 5px; }
+.sub[aria-selected="true"] { background: var(--chip); border-color: var(--muted); }
+.meta { font-size: 13.5px; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 600; }
+
+/* main grid */
+.main { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.left { display: grid; gap: 10px; min-width: 0; position: sticky; top: max(10px, env(safe-area-inset-top, 0px)); }
+.left .viewer { width: min(100%, calc((100vh - 230px) * 1.4142)); justify-self: center; }
+.right { display: grid; gap: 14px; min-width: 0; }
+@media (max-width: 980px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .left { position: static; }
+  .left .viewer { width: 100%; }
+}
+
+/* drawing viewer */
+.viewer { position: relative; aspect-ratio: 420 / 297; max-width: 100%; background: var(--paper); border-radius: 6px; overflow: hidden;
+  box-shadow: var(--shadow); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.viewer.zoomed { touch-action: none; }
+.viewer.drag { cursor: grabbing; }
+.stage { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+.stage.anim { transition: transform .38s cubic-bezier(.2, .7, .2, 1), --inv .38s cubic-bezier(.2, .7, .2, 1); }
+.stage > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; -webkit-user-drag: none; pointer-events: none; }
+:root[data-theme="dark"] .stage > img { filter: brightness(.94); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .stage > img { filter: brightness(.94); } }
+.stage svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.lead-l { stroke: var(--mark); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.span-l { stroke: var(--mark); stroke-width: 4; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.vbox { fill: rgba(210, 48, 42, .05); stroke: var(--mark); stroke-width: 1.5; stroke-dasharray: 6 4; vector-effect: non-scaling-stroke; }
+.zctl { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; z-index: 5; }
+.zctl button { min-width: 34px; height: 32px; padding: 0 9px; border-radius: 7px; border: 1px solid rgba(20, 30, 35, .18);
+  background: rgba(255, 255, 255, .92); color: #1b2023; cursor: pointer; font-size: 14px; line-height: 1; }
+.zctl button:hover { background: #fff; }
+
+/* markers (drawing + 3D) */
+.mk { position: absolute; z-index: 2; transform: translate(-50%, -50%) scale(var(--inv, 1)); min-width: 24px; height: 24px; padding: 0 6px;
+  border-radius: 12px; border: 0; background: var(--mark); color: #fff; font: 600 12px/24px var(--mono); letter-spacing: -.02em;
+  box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(0, 0, 0, .28); cursor: pointer; white-space: nowrap; transition: opacity .2s; }
+.mk:hover { filter: brightness(1.1); }
+.has-sel .mk:not(.on) { opacity: .38; }
+.mk.on { z-index: 3; animation: ping 1.3s ease-out 2; }
+@keyframes ping { 0% { box-shadow: 0 0 0 2px #fff, 0 0 0 2px rgba(210, 48, 42, .55); }
+                  100% { box-shadow: 0 0 0 2px #fff, 0 0 0 14px rgba(210, 48, 42, 0); } }
+
+/* view chips + caption */
+.views { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13.5px; }
+.views .lbl { color: var(--muted); margin-right: 2px; }
+.vchip { padding: 3px 10px; border-radius: 999px; border: 1px dashed var(--muted); background: transparent; cursor: pointer; }
+.vchip[aria-pressed="true"] { border-style: solid; border-color: var(--mark); color: var(--mark); background: var(--mark-soft); }
+.cap { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; min-height: 92px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start; }
+.cap .tag { margin-top: 3px; }
+.cap h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4; }
+.cap p { margin: 2px 0 0; max-width: 68ch; }
+.cap .kind { font: 500 11.5px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.tag { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 12px;
+  background: var(--mark); color: #fff; font: 600 12px/1 var(--mono); white-space: nowrap; }
+.tag.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+
+/* right column */
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-width: 0; }
+.card > h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+.fig { display: grid; justify-items: center; background: var(--view); border-radius: 6px; padding: 10px; }
+.figin { position: relative; display: inline-block; max-width: 100%; }
+.figin img { display: block; max-width: 100%; max-height: min(52vh, 520px); width: auto; height: auto; }
+.figcap { margin: 8px 2px 0; font-size: 13px; color: var(--muted); }
+.steps ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 4px; align-items: center; }
+.steps li { display: flex; align-items: center; gap: 4px; }
+.steps li + li::before { content: '→'; color: var(--muted); font-size: 12px; margin-right: 2px; }
+.step { padding: 4px 9px; border-radius: 7px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 13px; line-height: 1.3; }
+.step .n { font: 600 11.5px var(--mono); color: var(--mark); margin-right: 4px; }
+.step[aria-pressed="true"] { background: var(--mark-soft); border-color: var(--mark); }
+.steps .note { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+.list ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.row { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; gap: 8px; width: 100%; text-align: left; padding: 6px 8px;
+  border-radius: 7px; border: 0; background: transparent; cursor: pointer; }
+.row:hover { background: var(--chip); }
+.row[aria-pressed="true"] { background: var(--mark-soft); }
+.row .t { font-size: 14.5px; line-height: 1.35; }
+.row .tag { justify-self: start; }
+.foot { margin-top: 26px; font-size: 12.5px; color: var(--muted); max-width: 100ch; }
+@media (max-width: 560px) {
+  body { font-size: 14.5px; }
+  .mk { min-width: 20px; height: 20px; padding: 0 4px; border-radius: 10px; font-size: 10.5px; line-height: 20px; }
+  .zctl button { min-width: 32px; height: 30px; }
+  .cap { min-height: 0; }
+}
+.stepfigs { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; margin-top: 10px; }
+.stepfigs button { display: grid; padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--view);
+  cursor: pointer; text-align: left; }
+.stepfigs img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.stepfigs span { padding: 3px 7px 4px; font-size: 12px; background: var(--panel); }
+.stepfigs span b { font: 600 11.5px var(--mono); color: var(--mark); margin-right: 4px; }
+
+/* process-sequence figures */
+.tab.seqtab .code { font: 600 13px/1 var(--mono); }
+.seq { display: grid; gap: 12px; }
+.seqbar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+.seqbar p { margin: 0; max-width: 84ch; color: var(--muted); font-size: 14px; }
+.seqbar .dl { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13.5px; }
+.seqbar a, .seqact a { color: var(--ink); text-underline-offset: 2px; }
+.seqgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 14px; }
+.seqcard { display: grid; grid-template-rows: auto 1fr; min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  overflow: hidden; scroll-margin-top: 14px; transition: box-shadow .3s; }
+.seqcard.flash { box-shadow: 0 0 0 2px var(--mark); }
+.seqimg { display: block; width: 100%; padding: 0; border: 0; background: #e3e8e9; cursor: zoom-in; aspect-ratio: 16 / 10; }
+.seqimg img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.seqbody { display: grid; gap: 6px; align-content: start; padding: 10px 12px 12px; }
+.seqhead { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.seqhead h3 { margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.35; }
+.seqhead .tool { margin-left: auto; padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--muted); font: 500 12px var(--mono); white-space: nowrap; }
+.seqcard.branch .tag { background: transparent; color: var(--mark); box-shadow: inset 0 0 0 1px var(--mark); }
+.seqbody p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.seqact { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 2px; font-size: 13px; }
+.seqact button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--line);
+  background: transparent; cursor: pointer; font-size: 13px; }
+.seqact button:hover { border-color: var(--mark); color: var(--mark); }
+.lb { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; align-content: center; gap: 10px; padding: 16px;
+  background: rgba(10, 14, 16, .88); }
+.lb[hidden] { display: none; }
+.lb img { display: block; max-width: min(96vw, 1800px); max-height: 82vh; width: auto; height: auto; border-radius: 4px; background: #e3e8e9; }
+.lb p { margin: 0; color: #e9eef0; font-size: 14px; text-align: center; max-width: 90ch; }
+.lb p b { font-family: var(--mono); margin-right: 6px; }
+.lb button { position: absolute; top: max(10px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: 40px; height: 40px;
+  border-radius: 20px; border: 0; background: rgba(255, 255, 255, .14); color: #fff; font-size: 18px; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) {
+  .stage.anim { transition: none; }
+  .mk.on { animation: none; box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(210, 48, 42, .45); }
+}
+/*SIMCSS*/
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <div class="over">CTP 폐배터리 해체 로봇 · 도면 R03</div>
+    <h1>도면 해설</h1>
+    <p class="lead">천장 갠트리가 공구 01·02·03을 바꿔 끼우며 팩을 해체해요. 핵심은 셀을 하나씩 떼어내는 03 공구와 가열 작업대예요. 도면 번호(D-01…)와 공구 번호(01·02·03)는 서로 다른 번호예요. <b>공정 순서</b> 탭에는 단계별 그림이 있고, 맨 오른쪽 <b>공정 시뮬레이션</b> 탭에서는 커버 열기부터 셀 분리·분류까지(4~10단계) 직접 돌려 볼 수 있어요.</p>
+    <p class="how"><span class="tag">7</span><span id="hint"></span></p>
+    <p class="dlrow" id="dlrow" hidden></p>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist" aria-label="도면"></nav>
+  <div id="dwgview">
+  <div class="sheetbar">
+    <div class="subtabs" id="subtabs" role="tablist" aria-label="장"></div>
+    <div class="meta" id="meta"></div>
+  </div>
+
+  <main class="main">
+    <section class="left" aria-label="도면">
+      <div class="viewer" id="viewer">
+        <div class="stage" id="stage">
+          <img id="dwg" alt="" draggable="false">
+          <svg id="ov" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div id="mk2"></div>
+        </div>
+        <div class="zctl">
+          <button type="button" id="zin" aria-label="확대">＋</button>
+          <button type="button" id="zout" aria-label="축소">－</button>
+          <button type="button" id="zfit">전체</button>
+        </div>
+      </div>
+      <div class="views" id="views"></div>
+      <div class="cap" id="cap" aria-live="polite"></div>
+    </section>
+
+    <section class="right" aria-label="3D와 번호별 설명">
+      <div class="card">
+        <h2>3D로 보면</h2>
+        <div class="fig"><div class="figin" id="figin"><img id="img3d" alt=""><div id="mk3"></div></div></div>
+        <p class="figcap" id="figcap"></p>
+      </div>
+      <div class="card steps" id="steps" hidden></div>
+      <div class="card list"><h2 id="listh">번호별 설명</h2><ol id="list"></ol></div>
+    </section>
+  </main>
+  </div>
+  <section class="seq" id="seqview" hidden aria-label="공정 순서 그림">
+    <div class="seqbar">
+      <p id="seqintro"></p>
+      <div class="dl" id="seqdl"></div>
+    </div>
+    <ol class="seqgrid" id="seqgrid"></ol>
+  </section>
+<!--SIMHTML-->
+
+  <p class="foot">모든 치수와 배치는 설계 가정값이에요. CAD에서 확인한 것은 형상 유효성과 정지 상태 겹침까지이고, 실물 조립·필링 동작·강도·열·진공 유지·전기 절연·비상 대응은 검증하지 않았어요. 3D 그림은 같은 CAD 모델에서 바로 렌더링했어요.</p>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="그림 크게 보기">
+  <img id="lbimg" alt="">
+  <p id="lbcap"></p>
+  <button type="button" id="lbx" aria-label="닫기">✕</button>
+</div>
+<script type="application/json" id="dwg-data">/*DATA*/</script>
+<script>
+/*SIMJS*/
+</script>
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById('dwg-data').textContent);
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const viewer = $('#viewer'), stage = $('#stage'), ov = $('#ov'), mk2 = $('#mk2'), mk3 = $('#mk3');
+  const vw = { s: 1, x: 0, y: 0 };
+  let cur = null, sel = null, focusBoxPct = null;
+  $('#hint').textContent = D.hint;
+  const DL = D.downloads || null;
+  const dlLink = (href, txt) => { const a = el('a', 'dl', txt); a.href = href; a.setAttribute('download', ''); return a; };
+  const dlWrap = (href, txt) => { const w = el('span', 'dlwrap'); w.append(document.createTextNode(' · '), dlLink(href, txt)); return w; };
+  // Inside the claude.ai viewer a page may only hand over files through the `downloads` capability (plain links do
+  // nothing there): links stay hidden until it answers. A copy opened from disk has no window.claude and keeps
+  // ordinary links.
+  const hosted = !!(window.claude && typeof window.claude.use === 'function');
+  let dlApi = null;
+  if (hosted) {
+    document.documentElement.classList.add('dl-off');
+    Promise.resolve(window.claude.use('downloads')).then((api) => { dlApi = api; if (api) document.documentElement.classList.remove('dl-off'); }).catch(() => {});
+  }
+  function dlFlash(a, msg) { if (!a.dataset.t) a.dataset.t = a.textContent; a.textContent = msg; setTimeout(() => { a.textContent = a.dataset.t; }, 2600); }
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('a.dl');
+    if (!a || !hosted) return;
+    e.preventDefault();
+    if (!dlApi || a.dataset.busy) return;
+    const href = a.getAttribute('href');
+    a.dataset.busy = '1';
+    try {
+      const res = await fetch(href);
+      if (!res.ok) throw new Error('fetch');
+      await dlApi.save({ filename: href.split('/').pop(), data: await res.blob() });
+    } catch (err) {
+      const code = err && err.code;
+      if (code !== 'declined') dlFlash(a, code === 'rate_limited' ? '잠시 뒤 다시 눌러 주세요' : '내려받지 못했어요');
+    } finally { delete a.dataset.busy; }
+  });
+  if (DL) {
+    const r = $('#dlrow'); r.hidden = false; r.append(el('span', '', '내려받기'));
+    if (DL.all) r.append(dlLink(DL.all, '도면 12장 PDF'));
+    if (DL.video) r.append(dlLink(DL.video, '공정 개념 영상 (mp4, 41초)'));
+    if (DL.note) r.append(el('span', 'dlnote', DL.note));
+  }
+
+  // ------------------------------------------------------------------ tabs
+  const groups = D.groups.map(([dwg, name]) => ({ dwg, name, sheets: D.sheets.filter((s) => s.dwg === dwg) }));
+  const tabs = $('#tabs');
+  groups.forEach((g) => {
+    const b = el('button', 'tab'); b.type = 'button'; b.setAttribute('role', 'tab'); b.dataset.dwg = g.dwg;
+    b.append(el('span', 'code', g.dwg), el('span', '', g.name));
+    if (g.sheets.length > 1) b.append(el('span', 'cnt', g.sheets.length + '장'));
+    b.addEventListener('click', () => show(g.sheets[0].id));
+    tabs.append(b);
+  });
+  const P = D.process || null;
+  if (P) {
+    const seqTab = el('button', 'tab seqtab'); seqTab.type = 'button'; seqTab.setAttribute('role', 'tab'); seqTab.dataset.dwg = 'SEQ';
+    seqTab.append(el('span', '', '공정 순서'), el('span', 'cnt', P.figs.length + '장'));
+    seqTab.addEventListener('click', () => setView('seq'));
+    tabs.append(seqTab);
+  }
+  const simTab = el('button', 'tab simtab'); simTab.type = 'button'; simTab.setAttribute('role', 'tab'); simTab.dataset.dwg = 'SIM';
+  const sg = el('span', 'code'); sg.append(el('span', 'playglyph')); simTab.append(sg, el('span', '', '공정 시뮬레이션'));
+  simTab.addEventListener('click', () => setView('sim'));
+  tabs.append(simTab);
+  function setView(v, keepHash) {
+    const sim = v === 'sim', seq = v === 'seq' && !!P;
+    $('#dwgview').hidden = sim || seq; $('#simview').hidden = !sim; $('#seqview').hidden = !seq;
+    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(sim ? t.dataset.dwg === 'SIM' : seq ? t.dataset.dwg === 'SEQ' : !!cur && t.dataset.dwg === cur.dwg)));
+    if (sim || seq) {
+      if (!keepHash) { try { history.replaceState(null, '', sim ? '#sim' : '#seq'); } catch (e) { /* frame may refuse */ } }
+      try { localStorage.setItem('ctp-dwg-sheet', sim ? 'sim' : 'seq'); } catch (e) { /* storage may be blocked */ }
+    }
+    if (sim) { if (window.CTPSim) window.CTPSim.open(); } else if (window.CTPSim) window.CTPSim.close();
+    revealTab();
+  }
+  function revealTab() {
+    // keep the selected tab visible in the horizontally scrolling tab bar (phones)
+    const at = tabs.querySelector('.tab[aria-selected="true"]'); if (!at) return;
+    const r = at.getBoundingClientRect(), tr = tabs.getBoundingClientRect();
+    if (r.left < tr.left || r.right > tr.right) tabs.scrollLeft += r.left - tr.left - 8;
+  }
+
+  // ------------------------------------------------------------------ process-sequence figures
+  const figById = {};
+  function openLb(f) {
+    $('#lbimg').src = f.big || f.png; $('#lbimg').alt = `${f.no} ${f.title}`;
+    const c = $('#lbcap'); c.replaceChildren(el('b', '', f.no), document.createTextNode(`${f.title} — ${f.note}`));
+    $('#lb').hidden = false; $('#lbx').focus();
+  }
+  function closeLb() { $('#lb').hidden = true; $('#lbimg').removeAttribute('src'); }
+  $('#lbx').addEventListener('click', closeLb);
+  $('#lb').addEventListener('click', (e) => { if (e.target.id === 'lb') closeLb(); });
+  function simScene(f) { setView('sim'); if (window.CTPSim && window.CTPSim.scene) window.CTPSim.scene(f); }
+  function openSeq(id) {
+    setView('seq');
+    const c = document.getElementById('seq-' + id);
+    if (c) { c.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1600); }
+  }
+  if (P) {
+    $('#seqintro').textContent = `공정 시뮬레이션에서 뽑은 그림 ${P.figs.length}장이에요. 그림을 누르면 크게 보이고, '이 장면부터 시뮬레이션'을 누르면 그 순간으로 바로 가요. 커버·나사·전장품·냉각수 포트는 가상 형상이고 01은 외형만 넣었어요. 모든 형상과 위치는 가정이에요.`;
+    const dl = $('#seqdl');
+    const a1 = dlLink(P.boards.png, '한 장 모음 PNG'), a2 = dlLink(P.boards.pdf, 'PDF'), a3 = dlLink(P.boards.png_portrait, '세로형 PNG');
+    dl.append(a1, a2, a3);
+    const grid = $('#seqgrid');
+    P.figs.forEach((f) => {
+      figById[f.id] = f;
+      const li = el('li', 'seqcard' + (f.no === '비상' ? ' branch' : '')); li.id = 'seq-' + f.id;
+      const ib = el('button', 'seqimg'); ib.type = 'button'; ib.setAttribute('aria-label', `${f.no} ${f.title} 크게 보기`);
+      const img = el('img'); img.src = f.img; img.alt = `${f.no} ${f.title}`; img.loading = 'lazy'; img.width = 1200; img.height = 750;
+      ib.append(img); ib.addEventListener('click', () => openLb(f));
+      const body = el('div', 'seqbody'), head = el('div', 'seqhead');
+      head.append(el('span', 'tag', f.no), el('h3', '', f.title));
+      if (f.tool) head.append(el('span', 'tool', f.tool));
+      const act = el('div', 'seqact'), go = el('button', '', '▶ 이 장면부터 시뮬레이션'); go.type = 'button';
+      go.addEventListener('click', () => simScene(f));
+      const a = dlLink(f.png, '원본 PNG');
+      act.append(go, a);
+      body.append(head, el('p', '', f.note), act);
+      li.append(ib, body); grid.append(li);
+    });
+  }
+
+  // ------------------------------------------------------------------ viewer transform
+  const W = () => viewer.clientWidth, H = () => viewer.clientHeight;
+  function clamp() {
+    const w = W(), h = H();
+    vw.s = Math.min(6, Math.max(1, vw.s));
+    vw.x = Math.min(0, Math.max(w - w * vw.s, vw.x));
+    vw.y = Math.min(0, Math.max(h - h * vw.s, vw.y));
+  }
+  function apply(anim) {
+    clamp();
+    stage.classList.toggle('anim', !!anim);
+    stage.style.transform = `translate(${vw.x}px, ${vw.y}px) scale(${vw.s})`;
+    stage.style.setProperty('--inv', (1 / vw.s).toFixed(4));
+    viewer.classList.toggle('zoomed', vw.s > 1.01);
+  }
+  function zoomAt(px, py, f, anim) {
+    const s2 = Math.min(6, Math.max(1, vw.s * f)), k = s2 / vw.s;
+    vw.x = px - (px - vw.x) * k; vw.y = py - (py - vw.y) * k; vw.s = s2; apply(anim);
+  }
+  function fit(anim = true) { vw.s = 1; vw.x = 0; vw.y = 0; focusBoxPct = null; apply(anim); }
+  function focusBox(b) {
+    focusBoxPct = b;
+    const w = W(), h = H();
+    let bw = (b[2] - b[0]) / 100 * w, bh = (b[3] - b[1]) / 100 * h;
+    bw = Math.max(bw, w * 0.2); bh = Math.max(bh, h * 0.2);
+    const s = Math.min(4.2, Math.max(1, Math.min(w * 0.86 / bw, h * 0.86 / bh)));
+    const cx = (b[0] + b[2]) / 200 * w, cy = (b[1] + b[3]) / 200 * h;
+    vw.s = s; vw.x = w / 2 - s * cx; vw.y = h / 2 - s * cy; apply(true);
+  }
+  new ResizeObserver(() => { if (focusBoxPct) focusBox(focusBoxPct); else fit(false); }).observe(viewer);
+
+  // pointer: drag to pan, two fingers to pinch, wheel / double click to zoom
+  const pts = new Map(); let pinch = null, moved = false;
+  viewer.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.mk, .zctl')) return;
+    viewer.setPointerCapture(e.pointerId);
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = false;
+    if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) }; }
+    viewer.classList.add('drag');
+  });
+  viewer.addEventListener('pointermove', (e) => {
+    if (!pts.has(e.pointerId)) return;
+    const p = pts.get(e.pointerId), dx = e.clientX - p.x, dy = e.clientY - p.y;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+    if (pts.size === 1) { if (vw.s > 1) { vw.x += dx; vw.y += dy; focusBoxPct = null; apply(false); } }
+    else if (pts.size === 2 && pinch) {
+      const [a, b] = [...pts.values()], d = Math.hypot(a.x - b.x, a.y - b.y), r = viewer.getBoundingClientRect();
+      zoomAt((a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top, d / pinch.d, false); pinch.d = d; focusBoxPct = null;
+    }
+  });
+  const up = (e) => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; if (!pts.size) viewer.classList.remove('drag'); };
+  viewer.addEventListener('pointerup', up); viewer.addEventListener('pointercancel', up);
+  viewer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const r = viewer.getBoundingClientRect();
+    zoomAt(e.clientX - r.left, e.clientY - r.top, Math.exp(-e.deltaY * 0.0016), false); focusBoxPct = null;
+  }, { passive: false });
+  viewer.addEventListener('dblclick', (e) => {
+    if (e.target.closest('.mk, .zctl')) return;
+    const r = viewer.getBoundingClientRect(); zoomAt(e.clientX - r.left, e.clientY - r.top, 2, true); focusBoxPct = null;
+  });
+  $('#zin').addEventListener('click', () => { zoomAt(W() / 2, H() / 2, 1.6, true); focusBoxPct = null; });
+  $('#zout').addEventListener('click', () => { zoomAt(W() / 2, H() / 2, 1 / 1.6, true); focusBoxPct = null; });
+  $('#zfit').addEventListener('click', () => fit(true));
+
+  // ------------------------------------------------------------------ render a sheet
+  const svgNS = 'http://www.w3.org/2000/svg';
+  function line(cls, x1, y1, x2, y2) {
+    const l = document.createElementNS(svgNS, 'line');
+    l.setAttribute('class', cls); l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    ov.append(l);
+  }
+  function marker(host, m, i, where) {
+    const it = cur.items[i];
+    const b = el('button', 'mk', m.l); b.type = 'button';
+    b.style.left = m.p[0] + '%'; b.style.top = m.p[1] + '%';
+    b.dataset.i = i; b.dataset.l = m.l;
+    b.setAttribute('aria-label', `${m.l} ${it.t} (${where})`);
+    b.addEventListener('click', (e) => { e.stopPropagation(); select('item', i); });
+    host.append(b);
+  }
+  function show(id, keepHash) {
+    const sh = D.sheets.find((s) => s.id === id) || D.sheets[0];
+    cur = sh; sel = null;
+    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.dwg === sh.dwg)));
+    const g = groups.find((x) => x.dwg === sh.dwg);
+    const subs = $('#subtabs'); subs.replaceChildren();
+    if (g.sheets.length > 1) g.sheets.forEach((s) => {
+      const b = el('button', 'sub'); b.type = 'button'; b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', String(s.id === sh.id));
+      b.append(el('span', 'n', s.no), document.createTextNode(s.short));
+      b.addEventListener('click', () => show(s.id)); subs.append(b);
+    });
+    const meta = $('#meta'); meta.replaceChildren();
+    meta.append(el('b', '', `${sh.dwg} ${sh.no}`), document.createTextNode(` · ${sh.title} · 척도 ${sh.scale}`));
+    if (DL && DL.dwg && DL.dwg[sh.dwg]) meta.append(dlWrap(DL.dwg[sh.dwg], `${sh.dwg} PDF`));
+    if (DL && DL.ks && sh.dwg === 'D-04') meta.append(dlWrap(DL.ks, 'KS 근거표 PDF'));
+    const img = $('#dwg'); img.src = sh.img; img.alt = `${sh.dwg} ${sh.no} ${sh.title}`;
+    ov.replaceChildren(); mk2.replaceChildren(); mk3.replaceChildren();
+    sh.items.forEach((it, i) => it.m2.forEach((m) => {
+      if (m.lead) line('lead-l', m.p[0], m.p[1], m.lead[0], m.lead[1]);
+      if (m.span) line('span-l', m.span[0], m.span[1], m.span[2], m.span[3]);
+      marker(mk2, m, i, '도면');
+    }));
+    sh.items.forEach((it, i) => it.m3.forEach((m) => marker(mk3, m, i, '3D')));
+    const i3 = $('#img3d'); i3.src = sh.img3d; i3.alt = `${sh.title} 3D`;
+    if (sh.size3d) { i3.width = sh.size3d[0]; i3.height = sh.size3d[1]; }
+    $('#figcap').textContent = sh.cap3d;
+    // views
+    const vs = $('#views'); vs.replaceChildren(el('span', 'lbl', '보는 법'));
+    sh.views.forEach((v, i) => {
+      const b = el('button', 'vchip', v.n); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => select('view', i)); vs.append(b);
+    });
+    // steps
+    const st = $('#steps');
+    if (sh.steps) {
+      st.hidden = false; st.replaceChildren(el('h2', '', '공정 순서'));
+      const ol = el('ol');
+      sh.steps.forEach((s, i) => {
+        const li = el('li'), b = el('button', 'step'); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+        b.append(el('span', 'n', s.n), document.createTextNode(s.t));
+        b.addEventListener('click', () => select('step', i)); li.append(b); ol.append(li);
+      });
+      st.append(ol, el('p', 'note', sh.stepNote));
+      if (P && sh.id === 'd01') { const sf = el('div', 'stepfigs'); sf.id = 'stepfigs'; sf.hidden = true; st.append(sf); }
+    } else { st.hidden = true; st.replaceChildren(); }
+    // list
+    const list = $('#list'); list.replaceChildren();
+    $('#listh').textContent = `번호별 설명 · ${sh.items.length}`;
+    sh.items.forEach((it, i) => {
+      const li = el('li'), b = el('button', 'row'); b.type = 'button'; b.setAttribute('aria-pressed', 'false'); b.dataset.i = i;
+      b.append(el('span', 'tag', it.L), el('span', 't', it.t));
+      b.addEventListener('click', () => select('item', i)); li.append(b); list.append(li);
+    });
+    caption();
+    highlight();
+    fit(false);
+    setView('dwg');
+    if (!keepHash) { try { history.replaceState(null, '', '#' + sh.id); } catch (e) { /* frame may refuse */ } }
+    try { localStorage.setItem('ctp-dwg-sheet', sh.id); } catch (e) { /* storage may be blocked */ }
+  }
+
+  // ------------------------------------------------------------------ selection
+  function caption() {
+    const c = $('#cap'); c.replaceChildren();
+    const box = el('div');
+    if (!sel) {
+      box.append(el('div', 'kind', '이 도면은'), el('p', '', cur.intro));
+      c.append(el('span', 'tag ghost', cur.dwg), box);
+      return;
+    }
+    let tag, kind, title, text;
+    if (sel.type === 'item') { const it = cur.items[sel.i]; tag = el('span', 'tag', it.L); kind = '번호 설명'; title = it.t; text = it.d; }
+    if (sel.type === 'view') { const v = cur.views[sel.i]; tag = el('span', 'tag ghost', '보기'); kind = '보는 법'; title = v.n; text = v.d; }
+    if (sel.type === 'step') { const s = cur.steps[sel.i]; tag = el('span', 'tag', s.n); kind = '공정 단계'; title = s.t; text = s.d; }
+    box.append(el('div', 'kind', kind), el('h3', '', title), el('p', '', text));
+    c.append(tag, box);
+  }
+  function highlight() {
+    const on = (b) => {
+      if (!sel) return false;
+      if (sel.type === 'item') return +b.dataset.i === sel.i;
+      if (sel.type === 'step') return cur.steps[sel.i].marks.includes(b.dataset.l);
+      return false;
+    };
+    const any = !!sel && sel.type !== 'view';
+    [mk2, mk3].forEach((host) => {
+      host.parentElement.classList.toggle('has-sel', any);
+      host.querySelectorAll('.mk').forEach((b) => { const o = on(b); b.classList.toggle('on', o); });
+    });
+    document.querySelectorAll('.row').forEach((r) => r.setAttribute('aria-pressed', String(!!sel && sel.type === 'item' && +r.dataset.i === sel.i)));
+    document.querySelectorAll('.vchip').forEach((r, i) => r.setAttribute('aria-pressed', String(!!sel && sel.type === 'view' && sel.i === i)));
+    document.querySelectorAll('.step').forEach((r, i) => r.setAttribute('aria-pressed', String(!!sel && sel.type === 'step' && sel.i === i)));
+    const sf = $('#stepfigs');
+    if (sf) {
+      const ids = sel && sel.type === 'step' && P ? (P.d01[cur.steps[sel.i].n] || []) : [];
+      sf.replaceChildren(); sf.hidden = !ids.length;
+      ids.forEach((id) => {
+        const f = figById[id]; if (!f) return;
+        const b = el('button'); b.type = 'button'; b.title = `공정 순서 그림 ${f.no}`;
+        const im = el('img'); im.src = f.img; im.alt = ''; im.loading = 'lazy';
+        const cap = el('span'); cap.append(el('b', '', f.no), document.createTextNode(f.title));
+        b.append(im, cap); b.addEventListener('click', () => openSeq(id)); sf.append(b);
+      });
+    }
+    ov.querySelectorAll('.vbox').forEach((r) => r.remove());
+    if (sel && sel.type === 'view') {
+      const b = cur.views[sel.i].box, r = document.createElementNS(svgNS, 'rect');
+      r.setAttribute('class', 'vbox'); r.setAttribute('x', b[0]); r.setAttribute('y', b[1]);
+      r.setAttribute('width', b[2] - b[0]); r.setAttribute('height', b[3] - b[1]); ov.prepend(r);
+    }
+  }
+  function select(type, i) {
+    if (sel && sel.type === type && sel.i === i) { sel = null; caption(); highlight(); fit(true); return; }
+    sel = { type, i };
+    caption(); highlight();
+    let box = null;
+    if (type === 'view') box = cur.views[i].box;
+    else {
+      const ms = [...mk2.querySelectorAll('.mk.on')].map((b) => [parseFloat(b.style.left), parseFloat(b.style.top)]);
+      if (type === 'item') cur.items[i].m2.forEach((m) => { if (m.lead) ms.push(m.lead); if (m.span) ms.push([m.span[0], m.span[1]], [m.span[2], m.span[3]]); });
+      if (ms.length) {
+        const xs = ms.map((p) => p[0]), ys = ms.map((p) => p[1]);
+        box = [Math.min(...xs) - 5, Math.min(...ys) - 6, Math.max(...xs) + 5, Math.max(...ys) + 6];
+      }
+    }
+    if (box) focusBox(box); else fit(true);
+    if (type === 'item' && window.matchMedia('(min-width: 981px)').matches) {
+      const r = document.querySelector(`.row[data-i="${i}"]`); if (r) r.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !$('#lb').hidden) { closeLb(); return; }
+    if (e.key === 'Escape' && (sel || vw.s > 1)) { sel = null; caption(); highlight(); fit(true); }
+  });
+
+  // ------------------------------------------------------------------ start
+  const isSeq = (h) => !!P && (h === 'seq' || h.startsWith('seq-'));
+  let start = (location.hash || '').slice(1);
+  if (start !== 'sim' && !isSeq(start) && !D.sheets.some((s) => s.id === start)) { try { start = localStorage.getItem('ctp-dwg-sheet') || ''; } catch (e) { start = ''; } }
+  show(D.sheets.some((s) => s.id === start) ? start : D.sheets[0].id, true);
+  if (start === 'sim') setView('sim', true);
+  else if (isSeq(start)) { setView('seq', true); if (start.startsWith('seq-')) openSeq(start.slice(4)); }
+  window.addEventListener('hashchange', () => {
+    const h = location.hash.slice(1);
+    if (h === 'sim') setView('sim', true);
+    else if (isSeq(h)) { setView('seq', true); if (h.startsWith('seq-')) openSeq(h.slice(4)); }
+    else if (h !== cur.id && D.sheets.some((s) => s.id === h)) show(h, true);
+  });
+})();
+</script>

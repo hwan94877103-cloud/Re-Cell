@@ -1,0 +1,92 @@
+<section class="sim" id="simview" hidden aria-label="공정 시뮬레이션">
+  <p class="simintro">CAD 모델로 4~10단계(커버 열기 → 배선·버스바 → 전장품 → 냉각수 → 셀 분리 → 측정·분류)를 01·02·03 공구로 돌려 보는 시뮬레이션이에요. 이동 경로와 시간은 축 속도와 주변 장비 높이로, 가열과 당김은 가정한 열·접착 모델로 계산해요. 커버·나사·전장품·냉각수 포트는 가상 형상이고 01은 외형 원기둥만 넣었어요. 모든 값은 가정값이고 검증 결과가 아니에요.</p>
+  <div class="simmain">
+    <div class="simleft">
+      <div class="simcanvas" id="simcanvas">
+        <canvas id="simgl" tabindex="0" aria-label="작업장 3D. 드래그로 돌리고, 휠이나 두 손가락으로 확대해요. 셀을 누르면 다음 대상으로 정해요."></canvas>
+        <div class="simload" id="simload">3D 모델을 불러오는 중…</div>
+        <div class="hudtl" id="hud"></div>
+        <div class="camctl">
+          <div class="seg" role="group" aria-label="시점">
+            <button type="button" data-cam="all" aria-pressed="false">전체</button>
+            <button type="button" data-cam="bench" aria-pressed="false">작업대</button>
+            <button type="button" data-cam="follow" aria-pressed="true">따라가기</button>
+          </div>
+          <div class="seg"><button type="button" id="sect" aria-pressed="true" title="공구가 셀 위에 있을 때 앞쪽 셀을 잘라서 보여줘요">단면</button><button type="button" id="xray" aria-pressed="false" title="셀과 판을 반투명하게 해서 접착층 온도와 코일을 보여줘요">투시</button></div>
+        </div>
+        <div class="banner" id="banner" hidden></div>
+      </div>
+      <div class="simctl">
+        <button type="button" class="btn primary" id="play">▶ 시작</button>
+        <button type="button" class="btn" id="reset">처음부터</button>
+        <div class="seg2" role="group" aria-label="속도" id="speed">
+          <button type="button" data-s="1" aria-pressed="false">×1</button>
+          <button type="button" data-s="5" aria-pressed="true">×5</button>
+          <button type="button" data-s="20" aria-pressed="false">×20</button>
+          <button type="button" data-s="60" aria-pressed="false">×60</button>
+        </div>
+        <label class="chk"><input type="checkbox" id="auto" checked> 다음 셀 자동</label>
+        <span class="clock" id="clock">0:00</span>
+      </div>
+      <div class="phases" id="phases"></div>
+      <p class="desc" id="desc"></p>
+    </div>
+
+    <div class="simright">
+      <div class="scard">
+        <h2>셀 지도 <span class="r" id="cmapsum"></span></h2>
+        <div class="cmap" id="cmap"></div>
+        <div class="cleg"><span>접착층 온도</span><span class="bar" id="cbar"></span><span id="cbarlab">25 → 150 °C</span>
+          <span><span class="sw"></span> 떼어냄</span></div>
+        <p class="empty" style="padding:6px 0 0">셀을 누르면 다음에 떼어낼 셀로 정해요. 셀 번호는 D-03 코일 평면도와 같아요.</p>
+      </div>
+
+      <div class="scard">
+        <h2>지금 상태</h2>
+        <div class="state" id="pills"></div>
+        <dl class="ro" id="ro"></dl>
+      </div>
+
+      <div class="scard">
+        <h2>가열·필링 그래프 <span class="r" id="chartcell"></span></h2>
+        <div class="legend" id="leg1"></div>
+        <div class="chartwrap" id="cw1"><svg class="chart" id="ch1" role="img" aria-label="온도 그래프"></svg></div>
+        <div class="legend" id="leg2" style="margin-top:8px"></div>
+        <div class="chartwrap" id="cw2"><svg class="chart" id="ch2" role="img" aria-label="힘 그래프"></svg></div>
+        <button type="button" class="tbtn" id="tbtn">표로 보기</button>
+        <div class="tview" id="tview" hidden></div>
+      </div>
+
+      <div class="scard">
+        <h2>시뮬레이션이 찾은 것</h2>
+        <ul class="fnd" id="fnd"></ul>
+      </div>
+
+      <div class="scard">
+        <h2>가정값 바꿔 보기 <span class="r">바로 적용</span></h2>
+        <div class="prm" id="prm"></div>
+        <div class="prmfoot">
+          <button type="button" class="btn" id="prmreset">기본값으로</button>
+          <button type="button" class="btn danger" id="anom">이상 발열 넣기 (가상)</button>
+        </div>
+      </div>
+
+      <div class="scard">
+        <h2>셀별 기록</h2>
+        <div class="recwrap"><table class="rec" id="rec"></table></div>
+      </div>
+
+      <div class="scard">
+        <h2>이벤트</h2>
+        <ul class="evlog" id="ev"></ul>
+      </div>
+
+      <div class="scard">
+        <details class="model">
+          <summary>계산 모델 (가정)</summary>
+          <ul id="modelnote"></ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>

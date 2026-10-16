@@ -1,0 +1,80 @@
+﻿part,no,group,mass_kg,source,cog_x,cog_y,cog_z
+노즈,03-001,tool,0.2516,volume x density,-1.0,0.0,47.4
+하우징 몸체,03-002,tool,0.7976,volume x density,-0.0,0.0,81.9
+상판,03-003,tool,0.5799,volume x density,-1.6,-0.0,129.0
+누름판 앞,03-004,tool,0.0118,volume x density,0.0,18.0,74.0
+누름판 뒤 좌,03-005,tool,0.0048,volume x density,-40.3,-18.0,74.0
+누름판 뒤 우,03-006,tool,0.0028,volume x density,52.6,-18.0,74.0
+컵 브래킷 L,03-007,tool,0.0119,volume x density,-40.0,-0.0,13.0
+컵 니플 L,03-102,tool,0.008,assumed,-40.0,-0.0,14.2
+M5 얇은 너트 L,03-103,tool,0.0008,volume x density,-40.0,-0.0,17.3
+타원 흡착컵 L,03-101,tool,0.005,assumed,-40.0,0.0,4.2
+M3 인서트 L0,03-206,tool,0.0006,volume x density,-52.0,0.0,19.0
+M3x8 볼트 컵 L0,03-205,tool,0.0008,volume x density,-52.0,0.0,13.7
+M3 인서트 L1,03-206,tool,0.0006,volume x density,-28.0,-0.0,19.0
+M3x8 볼트 컵 L1,03-205,tool,0.0008,volume x density,-28.0,-0.0,13.7
+진공 호스 L,03-301,tool,0.0013,volume x density,-40.0,-9.7,79.0
+컵 브래킷 R,03-007,tool,0.0119,volume x density,40.0,-0.0,13.0
+컵 니플 R,03-102,tool,0.008,assumed,40.0,-0.0,14.2
+M5 얇은 너트 R,03-103,tool,0.0008,volume x density,40.0,-0.0,17.3
+타원 흡착컵 R,03-101,tool,0.005,assumed,40.0,0.0,4.2
+M3 인서트 R0,03-206,tool,0.0006,volume x density,28.0,-0.0,19.0
+M3x8 볼트 컵 R0,03-205,tool,0.0008,volume x density,28.0,-0.0,13.7
+M3 인서트 R1,03-206,tool,0.0006,volume x density,52.0,0.0,19.0
+M3x8 볼트 컵 R1,03-205,tool,0.0008,volume x density,52.0,0.0,13.7
+진공 호스 R,03-301,tool,0.0013,volume x density,40.0,9.7,79.0
+IR 센서,03-104,tool,0.06,assumed,12.0,-0.0,60.0
+IR 클램프 뒤,03-008,tool,0.0166,volume x density,12.0,-12.1,76.0
+IR 클램프 앞,03-009,tool,0.0092,volume x density,12.0,7.4,76.0
+M3x30 볼트 IR 조임0,03-204,tool,0.0016,volume x density,-4.0,-12.7,76.0
+M3x30 볼트 IR 조임1,03-204,tool,0.0016,volume x density,28.0,-12.7,76.0
+M3x25 볼트 IR 발0,03-203,tool,0.0014,volume x density,6.0,-18.0,72.9
+M3x25 볼트 IR 발1,03-203,tool,0.0014,volume x density,18.0,-18.0,72.9
+IR 케이블,03-105,tool,0.02,assumed,31.9,12.7,114.7
+M4x18 볼트 누름판00,03-201,tool,0.0023,volume x density,-60.0,-18.0,72.7
+M4x18 볼트 누름판01,03-201,tool,0.0023,volume x density,-60.0,18.0,72.7
+M4x18 볼트 누름판10,03-201,tool,0.0023,volume x density,60.0,-18.0,72.7
+M4x18 볼트 누름판11,03-201,tool,0.0023,volume x density,60.0,18.0,72.7
+M3x12 볼트 노즐 L-64,03-207,tool,0.001,volume x density,-64.0,-31.0,62.3
+M3x12 볼트 노즐 L-46,03-207,tool,0.001,volume x density,-46.0,-31.0,62.3
+노즐 블록 L,03-010,tool,0.0151,volume x density,-55.0,-31.0,50.9
+O링 P6 L,03-213,tool,0.0001,volume x density,-55.0,-31.0,57.3
+푸시인 피팅 M5-D4 L,03-106,tool,0.006,assumed,-55.0,-31.0,74.6
+M3x12 볼트 노즐 R+46,03-207,tool,0.001,volume x density,46.0,31.0,62.3
+M3x12 볼트 노즐 R+64,03-207,tool,0.001,volume x density,64.0,31.0,62.3
+노즐 블록 R,03-010,tool,0.0151,volume x density,55.0,31.0,50.9
+O링 P6 R,03-213,tool,0.0001,volume x density,55.0,31.0,57.3
+푸시인 피팅 M5-D4 R,03-106,tool,0.006,assumed,55.0,31.0,74.6
+냉각 공기 호스 L,03-302,tool,0.0018,volume x density,3.7,-32.1,112.9
+냉각 공기 호스 R,03-302,tool,0.0007,volume x density,54.2,31.8,117.0
+진공 유닛 L,03-107,tool,0.11,assumed,-14.9,-57.9,104.1
+M3x8 볼트 유닛 L-35,03-212,tool,0.0008,volume x density,-35.0,-69.6,104.0
+M3x8 볼트 유닛 L+5,03-212,tool,0.0008,volume x density,5.0,-69.6,104.0
+진공 유닛 R,03-107,tool,0.11,assumed,14.9,57.9,104.1
+M3x8 볼트 유닛 R-5,03-212,tool,0.0008,volume x density,-5.0,69.6,104.0
+M3x8 볼트 유닛 R+35,03-212,tool,0.0008,volume x density,35.0,69.6,104.0
+M4x20 볼트 상판-70-60,03-208,tool,0.0025,volume x density,-70.0,-60.0,129.9
+M4x20 볼트 상판-70+60,03-208,tool,0.0025,volume x density,-70.0,60.0,129.9
+M4x20 볼트 상판+70-60,03-208,tool,0.0025,volume x density,70.0,-60.0,129.9
+M4x20 볼트 상판+70+60,03-208,tool,0.0025,volume x density,70.0,60.0,129.9
+M4x20 볼트 상판+70-30,03-208,tool,0.0025,volume x density,70.0,-30.0,129.9
+M4x20 볼트 상판-70+30,03-208,tool,0.0025,volume x density,-70.0,30.0,129.9
+M5x12 볼트 로드셀 하0,03-209,tool,0.0035,volume x density,21.2,21.2,130.0
+M5x12 볼트 로드셀 하1,03-209,tool,0.0035,volume x density,-21.2,21.2,130.0
+M5x12 볼트 로드셀 하2,03-209,tool,0.0035,volume x density,-21.2,-21.2,130.0
+M5x12 볼트 로드셀 하3,03-209,tool,0.0035,volume x density,21.2,-21.2,130.0
+로드셀,03-108,common,0.45,assumed,0.0,-0.0,146.5
+M5x12 볼트 로드셀 상0,03-210,tool,0.0035,volume x density,21.2,21.2,163.0
+M5x12 볼트 교환기0,03-211,tool,0.0035,volume x density,45.0,-0.0,165.0
+M5x12 볼트 로드셀 상1,03-210,tool,0.0035,volume x density,-21.2,21.2,163.0
+M5x12 볼트 교환기1,03-211,tool,0.0035,volume x density,0.0,45.0,165.0
+M5x12 볼트 로드셀 상2,03-210,tool,0.0035,volume x density,-21.2,-21.2,163.0
+M5x12 볼트 교환기2,03-211,tool,0.0035,volume x density,-45.0,0.0,165.0
+M5x12 볼트 로드셀 상3,03-210,tool,0.0035,volume x density,21.2,-21.2,163.0
+M5x12 볼트 교환기3,03-211,tool,0.0035,volume x density,-0.0,-45.0,165.0
+로드셀 어댑터판,03-011,tool,0.2013,volume x density,-0.0,-0.0,164.0
+교환기 툴 플레이트,03-109,common,0.45,assumed,-0.0,-0.0,181.5
+통과 모듈 툴측,03-110,common,0.12,assumed,70.0,0.0,181.5
+교환기 마스터,CM-01,common,0.9,assumed,0.0,0.0,214.0
+통과 모듈 마스터측,CM-02,common,0.12,assumed,70.0,0.0,206.5
+기울임축 유닛,CM-03,common,2.2,assumed,0.0,0.0,264.0
